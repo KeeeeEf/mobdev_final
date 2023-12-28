@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mobdev_final/details/Signup.dart';
+import 'package:mobdev_final/details/Dashboard.dart';
 import 'package:mobdev_final/routes.dart';
 
 class Login extends StatefulWidget {
@@ -19,7 +22,7 @@ class _LoginState extends State<Login> {
       body: Center(
         child: Container(
           width: 300.0,
-          height: 250.0,
+          height: 300.0,
           padding: EdgeInsets.all(16.0),
           decoration: BoxDecoration(
             color: Colors.grey,
@@ -50,15 +53,8 @@ class _LoginState extends State<Login> {
               SizedBox(height: 32.0),
               ElevatedButton(
                 onPressed: () {
-                  // Perform login logic here
-                  String email = _emailController.text;
-                  String password = _passwordController.text;
-
-                  // Add your login logic here, e.g., call an API
-                  print('Email: $email, Password: $password');
-
-                  // Navigate to home screen after successful login
-                  // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                  signIn(_emailController.value.text,
+                      _passwordController.value.text);
                 },
                 child: Text('Login'),
               ),
@@ -66,10 +62,38 @@ class _LoginState extends State<Login> {
                 onPressed: () {},
                 child: Text('Sign-in with Google'),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("New to the App?"),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacementNamed(context, Signup.routeName);
+                    },
+                    child: Text(
+                      "Sign up here",
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  )
+                ],
+              )
             ],
           ),
         ),
       ),
     );
+  }
+
+  signIn(String email, String password) async {
+    try {
+      UserCredential credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      print("Login Successfully");
+      Navigator.pushReplacementNamed(context, Dashboard.routeName);
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+    } catch (e) {
+      print(e);
+    }
   }
 }
