@@ -7,6 +7,6 @@ import 'package:mobdev_final/details/Dashboard.dart';
 final Map<String, WidgetBuilder> routes = {
   MainScreen.routeName: (BuildContext context) => MainScreen(),
   Login.routeName: (BuildContext context) => Login(),
-  // Dashboard.routeName: (BuildContext context) => Dashboard(),
+  Dashboard.routeName: (BuildContext context) => Dashboard(),
   Signup.routeName: (BuildContext context) => Signup(),
 };

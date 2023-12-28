@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:mobdev_final/firebase_options.dart';
 import 'package:mobdev_final/routes.dart';
 import 'package:mobdev_final/details/Login.dart';
 import 'package:mobdev_final/details/Signup.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MaterialApp(
     home: MainScreen(),
     routes: routes,
