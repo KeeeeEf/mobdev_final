@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mobdev_final/details/Dashboard.dart';
 import 'package:mobdev_final/firebase_options.dart';
 import 'package:mobdev_final/routes.dart';
 import 'package:mobdev_final/details/Login.dart';
 import 'package:mobdev_final/details/Signup.dart';
+import 'package:mobdev_final/services/StorageService.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MaterialApp(
-    home: MainScreen(),
-    routes: routes,
-  ));
+
+  StorageService storageService = StorageService();
+
+  var item = await storageService.readData("uid");
+
+  if (item != null) {
+    runApp(MaterialApp(
+      initialRoute: Dashboard.routeName,
+      routes: routes,
+    ));
+  } else {
+    runApp(MaterialApp(
+      initialRoute: MainScreen.routeName,
+      routes: routes,
+    ));
+  }
 }
 
 class MainScreen extends StatefulWidget {
