@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "891631910173",
+    "project_id": "mobdev-finals-1d81a",
+    "storage_bucket": "mobdev-finals-1d81a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891631910173:android:a4ceeafe7716fe5fd0b5f4",
+        "android_client_info": {
+          "package_name": "com.example.futures"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOJzCvBki6UwlQJ0m9LgQU7VQEWbG6Pbo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
