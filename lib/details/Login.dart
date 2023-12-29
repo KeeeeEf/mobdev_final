@@ -94,7 +94,7 @@ class _LoginState extends State<Login> {
       print("Login Successfully");
 
       var item = StorageItem("uid", credential.user?.uid ?? "");
-
+      print(credential);
       await storageService.saveData(item);
 
       Navigator.pushReplacementNamed(context, Dashboard.routeName);
