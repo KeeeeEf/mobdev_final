@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mobdev_final/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mobdev_final/firebase_options.dart';
@@ -6,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:mobdev_final/main.dart';
 import 'package:mobdev_final/services/firestore.dart';
 import 'package:mobdev_final/services/StorageService.dart';
+import 'package:mobdev_final/details/Notes.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,113 +26,78 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardScreenState extends State<Dashboard> {
   StorageService storageService = StorageService();
-  //firestore
-  final FirestoreService firestoreService = FirestoreService();
-
-  // text controller
-  final TextEditingController textController = TextEditingController();
-
-  void openNoteBox({String? docID}) {
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              content: TextField(
-                controller: textController,
-              ),
-              actions: [
-                ElevatedButton(
-                    onPressed: () {
-                      if (docID == null) {
-                        firestoreService.addNote('bilat', textController.text);
-                      }
-
-                      //update
-                      else {
-                        firestoreService.updateNote(
-                            docID, 'bilat', textController.text);
-                      }
-
-                      //clear the text controller
-                      textController.clear();
-
-                      //close the box
-                      Navigator.pop(context);
-                    },
-                    child: Text("Save"))
-              ],
-            ));
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Want an Advices?',
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Color.fromRGBO(250, 250, 250, 1),
-        shadowColor: Color(0),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            padding: EdgeInsets.all(5.0),
-            color: Colors.amber,
-            onPressed: () {
-              signOut();
-            },
+    return MaterialApp(
+        theme: new ThemeData(scaffoldBackgroundColor: background),
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'QuizMaster',
+              style: TextStyle(color: Colors.black),
+              ),
+            backgroundColor: primary,
+            actions: [
+              IconButton(
+                icon: Icon(Icons.logout),
+                padding: EdgeInsets.all(5.0),
+                color: Colors.amber,
+                onPressed: () {
+                  signOut();
+                },
+              ),
+            ],
           ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: openNoteBox,
-        child: const Icon(Icons.add),
-      ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: firestoreService.getNotesStream(),
-        builder: ((context, snapshot) {
-          if (snapshot.hasData) {
-            List notesList = snapshot.data!.docs;
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center, 
+              crossAxisAlignment: CrossAxisAlignment.center, 
+              children: [
+                Container(
+                  margin: EdgeInsets.all(10.0), 
+                  width: 300,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, Notes.routeName);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: secondary, 
+                      onPrimary: Colors.black, 
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                      textStyle: TextStyle(fontSize: 24), 
+                      side: BorderSide(color: Colors.black, width: 2.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0), 
+                      ),
+                    ),
+                    child: Text('Notes'),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(10.0),
+                  width: 300,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      primary: secondary,
+                      onPrimary: Colors.black, 
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                      textStyle: TextStyle(fontSize: 24),
+                      side: BorderSide(color: Colors.black, width: 2.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0), 
+                      ),
+                    ),
+                    child: Text('FlashCards'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+  );}
 
-            return ListView.builder(
-              itemCount: notesList.length,
-              itemBuilder: (context, index) {
-                //get each indiv doc
-                DocumentSnapshot document = notesList[index];
-                String docID = document.id;
-
-                //get note from the doc
-                Map<String, dynamic> data =
-                    document.data() as Map<String, dynamic>;
-                String noteText = data['content'];
-
-                //display as a list tile
-                return ListTile(
-                    title: Text(noteText),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          onPressed: () => openNoteBox(docID: docID),
-                          icon: const Icon(Icons.settings),
-                        ),
-                        IconButton(
-                          onPressed: () => firestoreService.deleteNote(docID),
-                          icon: const Icon(Icons.delete),
-                        ),
-                      ],
-                    ));
-              },
-            );
-          } else {
-            return const Text('Bushet');
-          }
-        }),
-      ),
-    );
-  }
-
-  signOut() async {
+    signOut() async {
     try {
       await storageService.deleteAllData();
       print("Logout na");
