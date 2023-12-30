@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobdev_final/details/Login.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Signup extends StatefulWidget {
   static const String routeName = "signup";
@@ -17,13 +18,14 @@ class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(217, 178, 169, 1),
       body: Center(
         child: Container(
-          width: 300.0,
-          height: 300.0,
+          width: 325.0,
+          height: 345.0,
           padding: EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            color: Colors.grey,
+            color: Color.fromRGBO(250, 240, 227, 1),
             borderRadius: BorderRadius.circular(10.0),
           ),
           child: Column(
@@ -32,7 +34,12 @@ class _SignupState extends State<Signup> {
               TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'Input Email',
+                  labelStyle: GoogleFonts.robotoMono(
+                    color: Colors.black,
+                    fontSize: 15.0,
+                  ),
+
                   fillColor: Colors.white,
                   filled: true,
                 ),
@@ -43,6 +50,10 @@ class _SignupState extends State<Signup> {
                 controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password',
+                  labelStyle: GoogleFonts.robotoMono(
+                    color: Colors.black,
+                    fontSize:15.0,
+                  ),
                   fillColor: Colors.white,
                   filled: true,
                 ),
@@ -54,19 +65,45 @@ class _SignupState extends State<Signup> {
                   signUp(_emailController.value.text,
                       _passwordController.value.text);
                 },
-                child: Text('Sign Up'),
+                  style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    Color.fromRGBO(242, 219, 213, 1)
+                    ),
+                    
+                    fixedSize: MaterialStateProperty.all<Size>(
+                      Size(85,50),
+                    ),
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  ),
+                ),
+                child: Text(
+                  'Sign Up',
+                  style: GoogleFonts.robotoMono(
+                    fontSize: 15.0,
+                    color: Colors.black, 
+                  ),),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Already have an account?"),
+                  Text(
+                    "Already have an account?",
+                    style: GoogleFonts.robotoMono(
+                      fontSize: 15.0,
+                      color: Colors.black,
+                    ),
+                    ),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushReplacementNamed(context, Login.routeName);
                     },
                     child: Text(
                       "Login",
-                      style: TextStyle(color: Colors.blue),
+                      style: GoogleFonts.robotoMono(
+                        fontSize: 15.0,
+                        color: Colors.blue,
+                      ),
                     ),
                   )
                 ],
