@@ -33,7 +33,6 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(244, 238, 237, 1.0),
       body: Center(
         child: Container(
           width: 300.0,
@@ -111,6 +110,7 @@ class _LoginState extends State<Login> {
       print("Login Successfully");
 
       var item = StorageItem("uid", credential.user?.uid ?? "");
+      print(credential);
       await storageService.saveData(item);
 
       Navigator.pushReplacementNamed(context, Dashboard.routeName);
@@ -124,7 +124,7 @@ class _LoginState extends State<Login> {
   loginWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
+      print("Login Successfully");
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
 
