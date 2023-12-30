@@ -67,7 +67,7 @@ class _LoginState extends State<Login> {
             ),
             Container(
               width: 300.0,
-              height: 300.0,
+              height: 350.0,
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: const Color.fromRGBO(250, 244, 227, 1),
