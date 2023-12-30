@@ -65,11 +65,13 @@ class _MainScreenState extends State<MainScreen> {
               'Welcome to (Name of Website)\n A website for notes taking',
             ),
             FloatingActionButton(
+              heroTag: "btn1",
               onPressed: login,
               tooltip: 'Login',
               child: const Text('Login'),
             ),
             FloatingActionButton(
+              heroTag: "btn2",
               onPressed: register,
               tooltip: 'Signup',
               child: const Text('Signup'),
