@@ -30,6 +30,8 @@ class _LoginState extends State<Login> {
   StorageService storageService = StorageService();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +127,7 @@ class _LoginState extends State<Login> {
                     height: 10.0,
                   ),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       loginWithGoogle();
                     },
                     style: ButtonStyle(
@@ -195,22 +197,26 @@ class _LoginState extends State<Login> {
 
   loginWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      print("Login Successfully");
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount!.authentication;
 
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
       );
 
-      UserCredential? userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+      final UserCredential authResult =
+          await _auth.signInWithCredential(credential);
+      final User? user = authResult.user;
 
-      Navigator.pushReplacementNamed(context, Dashboard.routeName);
-    } catch (e) {
-      print(e);
+      print("Signed in: ${user!.displayName}");
+
+      return user;
+    } catch (error) {
+      print(error);
+      return null;
     }
   }
 }
