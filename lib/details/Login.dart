@@ -125,7 +125,9 @@ class _LoginState extends State<Login> {
                     height: 10.0,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      loginWithGoogle();
+                    },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Color.fromRGBO(242, 219, 213, 1)),
