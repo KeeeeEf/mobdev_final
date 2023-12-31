@@ -39,7 +39,6 @@ class _SignupState extends State<Signup> {
                     color: Colors.black,
                     fontSize: 15.0,
                   ),
-
                   fillColor: Colors.white,
                   filled: true,
                 ),
@@ -52,7 +51,7 @@ class _SignupState extends State<Signup> {
                   labelText: 'Password',
                   labelStyle: GoogleFonts.robotoMono(
                     color: Colors.black,
-                    fontSize:15.0,
+                    fontSize: 15.0,
                   ),
                   fillColor: Colors.white,
                   filled: true,
@@ -65,14 +64,12 @@ class _SignupState extends State<Signup> {
                   signUp(_emailController.value.text,
                       _passwordController.value.text);
                 },
-                  style: ButtonStyle(
+                style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
-                    Color.fromRGBO(242, 219, 213, 1)
-                    ),
-                    
-                    fixedSize: MaterialStateProperty.all<Size>(
-                      Size(85,50),
-                    ),
+                      Color.fromRGBO(242, 219, 213, 1)),
+                  fixedSize: MaterialStateProperty.all<Size>(
+                    Size(85, 50),
+                  ),
                   padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                     const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                   ),
@@ -81,8 +78,9 @@ class _SignupState extends State<Signup> {
                   'Sign Up',
                   style: GoogleFonts.robotoMono(
                     fontSize: 15.0,
-                    color: Colors.black, 
-                  ),),
+                    color: Colors.black,
+                  ),
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -93,7 +91,7 @@ class _SignupState extends State<Signup> {
                       fontSize: 15.0,
                       color: Colors.black,
                     ),
-                    ),
+                  ),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushReplacementNamed(context, Login.routeName);
@@ -121,6 +119,7 @@ class _SignupState extends State<Signup> {
           .createUserWithEmailAndPassword(email: email, password: password);
 
       print("Successful registration");
+      Navigator.pushReplacementNamed(context, Login.routeName);
     } catch (e) {
       print(e);
     }

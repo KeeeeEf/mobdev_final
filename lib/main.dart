@@ -87,10 +87,10 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void login() {
-    Navigator.pushReplacementNamed(context, Login.routeName);
+    Navigator.pushNamed(context, Login.routeName);
   }
 
   void register() {
-    Navigator.pushReplacementNamed(context, Signup.routeName);
+    Navigator.pushNamed(context, Signup.routeName);
   }
 }
