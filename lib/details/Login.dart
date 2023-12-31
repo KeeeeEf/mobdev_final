@@ -44,9 +44,9 @@ class _LoginState extends State<Login> {
             Stack(
               children: <Widget>[
                 Text(
-                  "QuizMaster",
+                  "Login",
                   style: GoogleFonts.robotoMono(
-                    fontSize: 45.0,
+                    fontSize: 35.0,
                     fontWeight: FontWeight.w400,
                     foreground: Paint()
                       ..style = PaintingStyle.stroke
@@ -55,9 +55,9 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 Text(
-                  "QuizMaster",
+                  "Login",
                   style: GoogleFonts.robotoMono(
-                    fontSize: 45.0,
+                    fontSize: 35.0,
                     fontWeight: FontWeight.w400,
                     color: Color.fromRGBO(165, 166, 143, 1),
                   ),
@@ -145,13 +145,13 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   const SizedBox(
-                    height: 10.0,
+                    height: 20.0,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "New to the App?",
+                        "New to the App? ",
                         style: GoogleFonts.robotoMono(),
                       ),
                       GestureDetector(

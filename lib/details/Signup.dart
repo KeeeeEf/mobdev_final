@@ -20,7 +20,34 @@ class _SignupState extends State<Signup> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(217, 178, 169, 1),
       body: Center(
-        child: Container(
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Stack(
+          children: <Widget>[
+            Text(
+              "Register",
+              style: GoogleFonts.robotoMono(
+                fontSize: 35.0,
+                fontWeight: FontWeight.w400,
+                foreground: Paint()
+                  ..style = PaintingStyle.stroke
+                  ..strokeWidth = 3
+                  ..color = Colors.black,
+              ),
+            ),
+            Text(
+              "Register",
+              style: GoogleFonts.robotoMono(
+                fontSize: 35.0,
+                fontWeight: FontWeight.w400,
+                color: Color.fromRGBO(165, 166, 143, 1),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 45.0,
+        ),
+        Container(
           width: 325.0,
           height: 345.0,
           padding: EdgeInsets.all(16.0),
@@ -82,11 +109,14 @@ class _SignupState extends State<Signup> {
                   ),
                 ),
               ),
+              const SizedBox(
+                height: 20.0,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Already have an account?",
+                    "Already have an account? ",
                     style: GoogleFonts.robotoMono(
                       fontSize: 15.0,
                       color: Colors.black,
@@ -109,7 +139,7 @@ class _SignupState extends State<Signup> {
             ],
           ),
         ),
-      ),
+      ])),
     );
   }
 
