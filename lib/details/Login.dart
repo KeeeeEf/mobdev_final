@@ -64,8 +64,35 @@ class _LoginState extends State<Login> {
                 ),
               ],
             ),
+            
             const SizedBox(
-              height: 45.0,
+              height: 25.0,
+            ),
+            
+            Stack(
+              children: <Widget>[
+                Text(
+                  "LOGIN",
+                  style: GoogleFonts.robotoMono(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w100,
+                    foreground: Paint()
+                      ..style = PaintingStyle.stroke
+                      ..strokeWidth = 2
+                      ..color = Colors.white,
+                  ),
+                ),
+                Text(
+                  "LOGIN",
+                  style: GoogleFonts.robotoMono(
+                    fontSize: 20.0,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 15.0,
             ),
             Container(
               width: 300.0,
