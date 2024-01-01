@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobdev_final/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -65,10 +66,13 @@ class _NotesScreenState extends State<Notes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(217, 178, 169, 1),
       appBar: AppBar(
-        title: const Text(
-          'Want an Advices?',
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          'QuizMaster',
+          style: GoogleFonts.robotoMono(
+            color: Color.fromRGBO(165, 166, 143, 1),
+          ),
         ),
         backgroundColor: primary,
         shadowColor: Color(0),
@@ -113,11 +117,19 @@ class _NotesScreenState extends State<Notes> {
                       children: [
                         IconButton(
                           onPressed: () => openNoteBox(docID: docID),
-                          icon: const Icon(Icons.settings),
+                          icon: const Icon(
+                            Icons.settings,
+                            color: Color.fromRGBO(250, 244, 227, 1) ,
+                            size: 10.0,
+                            ),
                         ),
                         IconButton(
                           onPressed: () => firestoreService.deleteNote(docID),
-                          icon: const Icon(Icons.delete),
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Color.fromRGBO(250, 244, 227, 1),
+                            size: 10.0,
+                            ),
                         ),
                       ],
                     ));

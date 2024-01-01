@@ -45,9 +45,8 @@ class _SignupState extends State<Signup> {
                 ),
               ],
             ),
-
-            SizedBox(height: 15.0,),
-
+            const SizedBox(height: 16.0,),
+            
             Container(
               width: 325.0,
               height: 400.0,
@@ -59,28 +58,6 @@ class _SignupState extends State<Signup> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Already have an account? ",
-                    style: GoogleFonts.robotoMono(
-                      fontSize: 15.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacementNamed(context, Login.routeName);
-                    },
-                    child: Text(
-                      "Login",
-                      style: GoogleFonts.robotoMono(
-                        fontSize: 15.0,
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 25.0,
-                  ),
                   TextField(
                     controller: _emailController,
                     decoration: InputDecoration(
@@ -119,10 +96,11 @@ class _SignupState extends State<Signup> {
                         Color.fromRGBO(242, 219, 213, 1),
                       ),
                       fixedSize: MaterialStateProperty.all<Size>(
-                        Size(85, 50),
+                        Size(150, 50),
                       ),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 20),
                       ),
                     ),
                     child: Text(
@@ -148,7 +126,8 @@ class _SignupState extends State<Signup> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacementNamed(context, Login.routeName);
+                          Navigator.pushReplacementNamed(
+                              context, Login.routeName);
                         },
                         child: Text(
                           "Login",

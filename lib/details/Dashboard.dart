@@ -11,6 +11,7 @@ import 'package:mobdev_final/services/firestore.dart';
 import 'package:mobdev_final/services/StorageService.dart';
 import 'package:mobdev_final/details/Notes.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobdev_final/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:mobdev_final/main.dart';
 import 'package:mobdev_final/services/firestore.dart';
 import 'package:mobdev_final/services/StorageService.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,15 +26,18 @@ class NotesList extends StatefulWidget {
 
 class _NotesListScreenState extends State<NotesList> {
   StorageService storageService = StorageService();
-final FirestoreService firestoreService = FirestoreService();
+  final FirestoreService firestoreService = FirestoreService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(217, 178, 169, 1),
       appBar: AppBar(
-        title: const Text(
-          'Want an Advices?',
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          'QuizMaster',
+          style: GoogleFonts.robotoMono(
+            color: Color.fromRGBO(165, 166, 143, 1),
+          ),
         ),
         backgroundColor: primary,
         shadowColor: Color(0),
@@ -42,7 +45,7 @@ final FirestoreService firestoreService = FirestoreService();
           IconButton(
             icon: Icon(Icons.logout),
             padding: EdgeInsets.all(5.0),
-            color: Colors.amber,
+            color: Color.fromRGBO(165, 166, 143, 1),
             onPressed: () {
               signOut();
             },
@@ -50,66 +53,93 @@ final FirestoreService firestoreService = FirestoreService();
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){
+        onPressed: () {
           Navigator.pushNamed(context, CreateNote.routeName);
         },
-        child: const Icon(Icons.add),
+        hoverColor: Color.fromRGBO(250, 244, 227, 1),
+        backgroundColor: Color.fromRGBO(244, 238, 237, 1),
+        child: const Icon(
+          Icons.add,
+          size: 40.0,
+          color: Color.fromRGBO(165, 166, 143, 1),
+        ),
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: firestoreService.getNotesStream(),
-        builder: ((context, snapshot) {
-          if (snapshot.hasData) {
-            List notesList = snapshot.data!.docs;
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: StreamBuilder<QuerySnapshot>(
+          stream: firestoreService.getNotesStream(),
+          builder: ((context, snapshot) {
+            if (snapshot.hasData) {
+              List notesList = snapshot.data!.docs;
 
-            return ListView.builder(
-              itemCount: notesList.length,
-              itemBuilder: (context, index) {
-                //get each indiv doc
-                DocumentSnapshot document = notesList[index];
-                String docID = document.id;
+              return ListView.builder(
+                itemCount: notesList.length,
+                itemBuilder: (context, index) {
+                  //get each indiv doc
+                  DocumentSnapshot document = notesList[index];
+                  String docID = document.id;
 
-                //get note from the doc
-                Map<String, dynamic> data =
-                    document.data() as Map<String, dynamic>;
-                String noteTitle = data['title'] ?? ''; // Provide a default value if 'title' is null
-                String noteText = data['content'] ?? ''; // Provide a default value if 'context' is null
+                  //get note from the doc
+                  Map<String, dynamic> data =
+                      document.data() as Map<String, dynamic>;
+                  String noteTitle = data['title'] ??
+                      ''; // Provide a default value if 'title' is null
+                  String noteText = data['content'] ??
+                      ''; // Provide a default value if 'context' is null
 
-
-                //display as a list tile
-                return ListTile(
-                  title: Text(noteTitle),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CreateNote(
-                          noteTitle: noteTitle,
-                          noteText: noteText,
-                          docID: docID,
+                  //display as a list tile
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                        bottom: 20.0), // Adjust the value as needed
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(250, 244, 227, 0.30),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          noteTitle,
+                          style: GoogleFonts.robotoMono(
+                              fontSize: 14.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CreateNote(
+                                noteTitle: noteTitle,
+                                noteText: noteText,
+                                docID: docID,
+                              ),
+                            ),
+                          );
+                        },
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              onPressed: () =>
+                                  firestoreService.deleteNote(docID),
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Color.fromRGBO(250, 244, 227, 1),
+                                size: 20.0,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    );
-                  },
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.settings),
-                      ),
-                      IconButton(
-                        onPressed: () => firestoreService.deleteNote(docID),
-                        icon: const Icon(Icons.delete),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
-          } else {
-            return const Text('Bushet');
-          }
-        }),
+                    ),
+                  );
+                },
+              );
+            } else {
+              return const Text('');
+            }
+          }),
+        ),
       ),
     );
   }

@@ -112,7 +112,7 @@ class _LoginState extends State<Login> {
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Color.fromRGBO(242, 219, 213, 1)),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                       ),
                     ),
                     child: Text(
@@ -133,7 +133,7 @@ class _LoginState extends State<Login> {
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Color.fromRGBO(242, 219, 213, 1)),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                       ),
                     ),
                     child: Text(
@@ -211,7 +211,7 @@ class _LoginState extends State<Login> {
       final User? user = authResult.user;
 
       print("Signed in: ${user!.displayName}");
-
+      Navigator.pushReplacementNamed(context, Dashboard.routeName);
       return user;
     } catch (error) {
       print(error);
