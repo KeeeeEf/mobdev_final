@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobdev_final/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -31,16 +32,22 @@ class _DashboardScreenState extends State<Dashboard> {
       theme: new ThemeData(scaffoldBackgroundColor: background),
       home: Scaffold(
         appBar: AppBar(
+          // ignore: prefer_const_constructors
           title: Text(
             'QuizMaster',
-            style: TextStyle(color: Colors.black),
+            style: GoogleFonts.robotoMono(
+              color: Color.fromRGBO(165, 166, 143, 1),
+              textStyle: const TextStyle(
+                fontWeight: FontWeight.w400,
+              ),
+            ),
           ),
           backgroundColor: primary,
           actions: [
             IconButton(
               icon: Icon(Icons.logout),
               padding: EdgeInsets.all(5.0),
-              color: Colors.amber,
+              color: Color.fromRGBO(165, 166, 143, 1),
               onPressed: () {
                 signOut();
               },

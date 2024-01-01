@@ -40,35 +40,7 @@ class _LoginState extends State<Login> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Stack(
-              children: <Widget>[
-                Text(
-                  "Login",
-                  style: GoogleFonts.robotoMono(
-                    fontSize: 35.0,
-                    fontWeight: FontWeight.w400,
-                    foreground: Paint()
-                      ..style = PaintingStyle.stroke
-                      ..strokeWidth = 3
-                      ..color = Colors.black,
-                  ),
-                ),
-                Text(
-                  "Login",
-                  style: GoogleFonts.robotoMono(
-                    fontSize: 35.0,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromRGBO(165, 166, 143, 1),
-                  ),
-                ),
-              ],
-            ),
-            
-            const SizedBox(
-              height: 25.0,
-            ),
-            
+          children: [     
             Stack(
               children: <Widget>[
                 Text(
@@ -140,7 +112,7 @@ class _LoginState extends State<Login> {
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Color.fromRGBO(242, 219, 213, 1)),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       ),
                     ),
                     child: Text(
@@ -161,7 +133,7 @@ class _LoginState extends State<Login> {
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Color.fromRGBO(242, 219, 213, 1)),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       ),
                     ),
                     child: Text(

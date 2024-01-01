@@ -129,18 +129,18 @@ class _MainScreenState extends State<MainScreen> {
                                 "Login",
                                 style: GoogleFonts.robotoMono(
                                   fontSize: 20.0,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w300,
                                   foreground: Paint()
                                     ..style = PaintingStyle.stroke
                                     ..strokeWidth = 3
-                                    ..color = Colors.black,
+                                    ..color = Colors.white,
                                 ),
                               ),
                               Text(
                                 "Login",
                                 style: GoogleFonts.robotoMono(
                                   fontSize: 20.0,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w600,
                                   color: Color.fromRGBO(165, 166, 143, 1),
                                 ),
                               ),
@@ -180,18 +180,18 @@ class _MainScreenState extends State<MainScreen> {
                                 "Register",
                                 style: GoogleFonts.robotoMono(
                                   fontSize: 20.0,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w300,
                                   foreground: Paint()
                                     ..style = PaintingStyle.stroke
                                     ..strokeWidth = 3
-                                    ..color = Colors.black,
+                                    ..color = Colors.white,
                                 ),
                               ),
                               Text(
                                 "Register",
                                 style: GoogleFonts.robotoMono(
                                   fontSize: 20.0,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w600,
                                   color: Color.fromRGBO(165, 166, 143, 1),
                                 ),
                               ),
