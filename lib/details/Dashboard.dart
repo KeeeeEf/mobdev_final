@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobdev_final/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mobdev_final/details/NotesList.dart';
 import 'package:mobdev_final/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:mobdev_final/main.dart';
@@ -57,7 +58,7 @@ class _DashboardScreenState extends State<Dashboard> {
                 width: 300,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, Notes.routeName);
+                    Navigator.pushNamed(context, NotesList.routeName);
                   },
                   style: ElevatedButton.styleFrom(
                     primary: secondary,
