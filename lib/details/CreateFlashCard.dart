@@ -17,15 +17,26 @@ void main() async {
 
 class CreateFlashcard extends StatefulWidget {
   static const String routeName = "createFlashcard";
-  final String? noteTitle;
-  final String? noteQuestion;
-  final String? noteAnswer;
+  final String? setTitle;
+  final String? type;
   final String? docID;
 
-  const CreateFlashcard({Key? key, this.noteTitle, this.noteQuestion, this.noteAnswer,  this.docID}) : super(key: key);
+  const CreateFlashcard({Key? key, this.setTitle, this.type,  this.docID}) : super(key: key);
 
   @override
   State<CreateFlashcard> createState() => _CreateFlashcardScreenState();
+}
+
+class FlashcardData {
+  final String docID;
+  final String question;
+  final String answer;
+
+  FlashcardData({
+    required this.docID,
+    required this.question,
+    required this.answer,
+  });
 }
 
 class _CreateFlashcardScreenState extends State<CreateFlashcard> {
@@ -39,14 +50,70 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
 
   List<TextEditingController> questionControllers = [];
   List<TextEditingController> answerControllers = [];
-  List<Widget> flashcardTextFields = []; // List to store dynamically added TextFields
+  List<Widget> flashcardTextFields = []; 
 
   @override
   void initState() {
+    print(widget.type);
     super.initState();
-    titleController.text = widget.noteTitle ?? '';
-    questionController.text = widget.noteQuestion ?? '';
-    answerController.text = widget.noteAnswer ?? '';
+    titleController.text = widget.setTitle ?? '';
+
+    if (widget.type == 'edit' && widget.docID != null) {
+      fetchFlashcards(widget.docID!);
+    }
+  }
+
+List<FlashcardData> flashcardDataList = [];
+
+  void fetchFlashcards(String setUid) {
+    flashCardService.getCardsStream(setUid).listen((QuerySnapshot querySnapshot) {
+      flashcardDataList.clear();
+
+      for (QueryDocumentSnapshot document in querySnapshot.docs) {
+        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+        String question = data['question'] ?? '';
+        String answer = data['answer'] ?? '';
+
+        TextEditingController questionController = TextEditingController(text: question);
+        TextEditingController answerController = TextEditingController(text: answer);
+
+        questionControllers.add(questionController);
+        answerControllers.add(answerController);
+
+        FlashcardData flashcardData = FlashcardData(
+          docID: document.id,
+          question: question,
+          answer: answer,
+        );
+
+        flashcardDataList.add(flashcardData);
+
+        flashcardTextFields.add(
+          Column(
+            children: [
+              Text('Question'),
+              TextField(
+                controller: questionController,
+                decoration: InputDecoration(
+                  hintText: 'Input Question',
+                ),
+                maxLines: null,
+              ),
+              Text('Answer'),
+              TextField(
+                controller: answerController,
+                decoration: InputDecoration(
+                  hintText: 'Input Answer',
+                ),
+                maxLines: null,
+              ),
+            ],
+          ),
+        );
+      }
+
+      setState(() {});
+    });
   }
 
   @override
@@ -63,18 +130,28 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
           actions: [
           ElevatedButton(
             onPressed: () async {
-              String? setUid = await flashCardSetService.addSet(titleController.text);
 
-              if (setUid != null) {
-                for (int i = 0; i < questionControllers.length; i++) {
-                  flashCardService.addCard(
-                    questionControllers[i].text,
-                    answerControllers[i].text,
-                    setUid,
-                  );
+                if(widget.type == 'add'){
+                  String? setUid = await flashCardSetService.addSet(titleController.text);
+                  if (setUid != null) {
+                    for (int i = 0; i < questionControllers.length; i++) {
+                      flashCardService.addCard(
+                        questionControllers[i].text,
+                        answerControllers[i].text,
+                        setUid,
+                      );
+                    }}
+                }else{
+                  print(widget.docID);
+                  for (int i = 0; i < questionControllers.length; i++) {
+                  print('testing: ${answerControllers[i].text}');
+                    flashCardService.updateCard(
+                      flashcardDataList[i].docID,
+                      questionControllers[i].text,
+                      answerControllers[i].text
+                    );
+                  }
                 }
-              }
-
               Navigator.pop(context);
             },
             child: Text('Save'),
