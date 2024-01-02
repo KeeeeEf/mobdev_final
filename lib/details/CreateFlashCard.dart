@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobdev_final/firebase_options.dart';
 import 'package:mobdev_final/colors.dart';
 import 'package:mobdev_final/services/firestore.dart';
@@ -63,14 +64,22 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Create Note',
-            style: TextStyle(color: Colors.black),
+            'Create Flashcard',
+            style: GoogleFonts.robotoMono(),
           ),
           backgroundColor: primary,
           actions: [
-            ElevatedButton(
-              onPressed: () async {
-                if (widget.type == 'add') {
+          ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                const Color.fromRGBO(165, 166, 143, 1),
+              ) 
+            
+            ),
+
+            onPressed: () async {
+
+                if(widget.type == 'add'){
                   String? setUid = await flashCardSetService.addSet(titleController.text);
                   if (setUid != null) {
                     for (int i = 0; i < questionControllers.length; i++) {
@@ -92,10 +101,15 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
                     );
                   }
                 }
-                Navigator.pop(context);
-              },
-              child: Text('Save'),
+              Navigator.pop(context);
+            },
+            child: Text(
+              'Save',
+              style: GoogleFonts.robotoMono(
+                color: Color.fromRGBO(244, 238, 237,1),
+              ),
             ),
+          ),
           ],
         ),
         body: SingleChildScrollView(
@@ -104,15 +118,24 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Set Title'),
+                Text(
+                  'Set Flashcard Title',
+                  style: GoogleFonts.robotoMono(
+                    fontSize: 12.0, 
+                  ),),
                 TextField(
+                  style: GoogleFonts.robotoMono(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w600,
+                  ),
                   controller: titleController,
                   decoration: InputDecoration(
                     hintText: 'Title',
+                    hintStyle: GoogleFonts.robotoMono(),
                   ),
                   maxLines: null, // Allows multiple lines
                 ),
-                Text('Flashcards'),
+
                 // Dynamically added TextFields
                 ListView.builder(
                   shrinkWrap: true,
@@ -123,10 +146,20 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
                         child: flashcardTextFields[index],
                       ),
                       ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color.fromRGBO(242, 219, 213, 1),
+                          )
+                        ),
                         onPressed: () {
                           deleteFlashcardTextField(index);
                         },
-                        child: Text('Delete'),
+                        child: Text(
+                          'Delete',
+                          style: GoogleFonts.robotoMono(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),),
                       ),
                     ],
                   ),
@@ -139,7 +172,13 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
           onPressed: () {
             addFlashcardTextField();
           },
-          child: Icon(Icons.add),
+          hoverColor: Color.fromRGBO(250, 244, 227, 1),
+          backgroundColor: Color.fromRGBO(244, 238, 237, 1),
+          child: const Icon(
+             Icons.add,
+            size: 40.0,
+            color: Color.fromRGBO(165, 166, 143, 1),
+            ),
         ),
       ),
     );
@@ -153,28 +192,55 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
       flashcardTextFields.add(
         Column(
           children: [
-            Text('Question'),
+            Text(
+              'Question',
+               style: GoogleFonts.robotoMono(
+                fontSize: 12.0 
+               ),),
             TextField(
+              style: GoogleFonts.robotoMono(
+                fontSize: 14.0,
+                fontWeight: FontWeight.w400,
+              ),
               controller: newQuestionController,
               decoration: InputDecoration(
                 hintText: 'Input Question',
+                hintStyle: GoogleFonts.robotoMono(
+                    fontSize: 14.0,
+                ),
+
               ),
               maxLines: null, // Allows multiple lines
             ),
-            Text('Answer'),
+            Text(
+              'Answer',
+              style: GoogleFonts.robotoMono(
+                fontSize: 12.0 
+               ),
+               ),
             TextField(
+              style: GoogleFonts.robotoMono(
+                fontSize: 14.0,
+              ),
               controller: newAnswerController,
               decoration: InputDecoration(
                 hintText: 'Input Answer',
+                hintStyle: GoogleFonts.robotoMono(
+                  fontSize: 14.0,
+                )
               ),
               maxLines: null, // Allows multiple lines
             ),
+            SizedBox(height: 30.0,),
           ],
         ),
       );
 
       questionControllers.add(newQuestionController);
       answerControllers.add(newAnswerController);
+
+    // Add a SizedBox for margin after each iteration
+   
     });
   }
 
