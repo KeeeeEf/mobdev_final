@@ -33,12 +33,22 @@ class _FlashCardScreenState extends State<Flashcard> {
   StorageService storageService = StorageService();
   final FlashCardService flashCardService = FlashCardService();
 
+  late List<FlashcardModel> _flashcards;
+  int _currIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _flashcards = []; // Initialize with your actual flashcards data
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(217, 178, 169, 1),
       appBar: AppBar(
         title: const Text(
-          'Your Flashcard 123',
+          'QuizMaster',
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: primary,
@@ -54,61 +64,93 @@ class _FlashCardScreenState extends State<Flashcard> {
           ),
         ],
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: flashCardService.getCardsStream(widget.setuid ?? ''),
-        builder: ((context, snapshot) {
-          if (snapshot.hasData) {
-            List notesList = snapshot.data!.docs;
-            return ListView.builder(
-              itemCount: notesList.length,
-              itemBuilder: (context, index) {
-                //get each indiv doc
-                DocumentSnapshot document = notesList[index];
-                String docID = document.id;
+      body: Center(
+        child: Container(
+          padding: EdgeInsets.all(16.0),
+          width: 300.0,
+          height: 400.0,
+          child: StreamBuilder<QuerySnapshot>(
+            stream: flashCardService.getCardsStream(widget.setuid ?? ''),
+            builder: ((context, snapshot) {
+              if (snapshot.hasData) {
+                _flashcards.clear(); // Clear existing data
+                List notesList = snapshot.data!.docs;
+                for (int index = 0; index < notesList.length; index++) {
+                  DocumentSnapshot document = notesList[index];
+                  Map<String, dynamic> data =
+                      document.data() as Map<String, dynamic>;
+                  String noteQuestion = data['question'] ?? '';
+                  String noteAnswer = data['answer'] ?? '';
 
-                //get note from the doc
-                Map<String, dynamic> data =
-                    document.data() as Map<String, dynamic>;
-                String noteQuestion = data['question'] ?? '';
-                String noteAnswer = data['answer'] ?? '';
+                  // Convert Firebase data to FlashcardModel
+                  FlashcardModel flashcard =
+                      FlashcardModel(noteQuestion, noteAnswer);
 
-                //display as a list tile
-                return SingleChildScrollView(
-                  child: ListTile(
-                    trailing: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Question: ${noteQuestion}'),
-                        Text('Answer: ${noteAnswer}'),
-                        SizedBox(
-                            width: 250,
-                            height: 250,
-                            child: FlipCard(
-                              front: Card(
-                                  elevation: 4,
-                                  child: Center(
-                                      child: Text(
-                                          '_flashcards[_currIndex].answer',
-                                          textAlign: TextAlign.center))),
-                              back: Card(
-                                  elevation: 4,
-                                  child: Center(
-                                      child: Text(
-                                          '_flashcards[_currIndex].answer',
-                                          textAlign: TextAlign.center))),
-                            )),
-                      ],
-                    ),
+                  // Add the FlashcardModel to the _flashcards list
+                  _flashcards.add(flashcard);
+                }
+
+                return Card(
+                  elevation: 4,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: 250,
+                        height: 250,
+                        child: FlipCard(
+                          front: Center(
+                            child: Text(
+                              'Question: ${_flashcards[_currIndex].question}',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          back: Center(
+                            child: Text(
+                              'Answer: ${_flashcards[_currIndex].answer}',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          OutlinedButton.icon(
+                            onPressed: previousCard,
+                            icon: Icon(Icons.chevron_left),
+                            label: Text('Prev'),
+                          ),
+                          OutlinedButton.icon(
+                            onPressed: nextCard,
+                            icon: Icon(Icons.chevron_right),
+                            label: Text('Next'),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
                 );
-              },
-            );
-          } else {
-            return const Text('Bushet');
-          }
-        }),
+              } else {
+                return const Text('Bushet');
+              }
+            }),
+          ),
+        ),
       ),
     );
+  }
+
+  void nextCard() {
+    setState(() {
+      _currIndex = (_currIndex + 1 < _flashcards.length) ? _currIndex + 1 : 0;
+    });
+  }
+
+  void previousCard() {
+    setState(() {
+      _currIndex =
+          (_currIndex - 1 >= 0) ? _currIndex - 1 : _flashcards.length - 1;
+    });
   }
 
   signOut() async {
@@ -120,4 +162,11 @@ class _FlashCardScreenState extends State<Flashcard> {
       print(e);
     }
   }
+}
+
+class FlashcardModel {
+  final String question;
+  final String answer;
+
+  FlashcardModel(this.question, this.answer);
 }

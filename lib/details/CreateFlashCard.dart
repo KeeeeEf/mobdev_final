@@ -22,7 +22,8 @@ class CreateFlashcard extends StatefulWidget {
   final String? type;
   final String? docID;
 
-  const CreateFlashcard({Key? key, this.setTitle, this.type,  this.docID}) : super(key: key);
+  const CreateFlashcard({Key? key, this.setTitle, this.type, this.docID})
+      : super(key: key);
 
   @override
   State<CreateFlashcard> createState() => _CreateFlashcardScreenState();
@@ -51,7 +52,7 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
 
   List<TextEditingController> questionControllers = [];
   List<TextEditingController> answerControllers = [];
-  List<Widget> flashcardTextFields = []; 
+  List<Widget> flashcardTextFields = [];
 
   @override
   void initState() {
@@ -64,10 +65,12 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
     }
   }
 
-List<FlashcardData> flashcardDataList = [];
+  List<FlashcardData> flashcardDataList = [];
 
   void fetchFlashcards(String setUid) {
-    flashCardService.getCardsStream(setUid).listen((QuerySnapshot querySnapshot) {
+    flashCardService
+        .getCardsStream(setUid)
+        .listen((QuerySnapshot querySnapshot) {
       flashcardDataList.clear();
 
       for (QueryDocumentSnapshot document in querySnapshot.docs) {
@@ -75,8 +78,10 @@ List<FlashcardData> flashcardDataList = [];
         String question = data['question'] ?? '';
         String answer = data['answer'] ?? '';
 
-        TextEditingController questionController = TextEditingController(text: question);
-        TextEditingController answerController = TextEditingController(text: answer);
+        TextEditingController questionController =
+            TextEditingController(text: question);
+        TextEditingController answerController =
+            TextEditingController(text: answer);
 
         questionControllers.add(questionController);
         answerControllers.add(answerController);
@@ -92,6 +97,9 @@ List<FlashcardData> flashcardDataList = [];
         flashcardTextFields.add(
           Column(
             children: [
+              const SizedBox(
+                height: 10.0,
+              ),
               Text('Question'),
               TextField(
                 controller: questionController,
@@ -129,18 +137,15 @@ List<FlashcardData> flashcardDataList = [];
           ),
           backgroundColor: primary,
           actions: [
-          ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(
+            ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
                 const Color.fromRGBO(165, 166, 143, 1),
-              ) 
-            
-            ),
-
-            onPressed: () async {
-
-                if(widget.type == 'add'){
-                  String? setUid = await flashCardSetService.addSet(titleController.text);
+              )),
+              onPressed: () async {
+                if (widget.type == 'add') {
+                  String? setUid =
+                      await flashCardSetService.addSet(titleController.text);
                   if (setUid != null) {
                     for (int i = 0; i < questionControllers.length; i++) {
                       flashCardService.addCard(
@@ -148,27 +153,25 @@ List<FlashcardData> flashcardDataList = [];
                         answerControllers[i].text,
                         setUid,
                       );
-                    }}
-                }else{
+                    }
+                  }
+                } else {
                   print(widget.docID);
                   for (int i = 0; i < questionControllers.length; i++) {
-                  print('testing: ${answerControllers[i].text}');
-                    flashCardService.updateCard(
-                      flashcardDataList[i].docID,
-                      questionControllers[i].text,
-                      answerControllers[i].text
-                    );
+                    print('testing: ${answerControllers[i].text}');
+                    flashCardService.updateCard(flashcardDataList[i].docID,
+                        questionControllers[i].text, answerControllers[i].text);
                   }
                 }
-              Navigator.pop(context);
-            },
-            child: Text(
-              'Save',
-              style: GoogleFonts.robotoMono(
-                color: Color.fromRGBO(244, 238, 237,1),
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Save',
+                style: GoogleFonts.robotoMono(
+                  color: Color.fromRGBO(244, 238, 237, 1),
+                ),
               ),
             ),
-          ),
           ],
         ),
         body: SingleChildScrollView(
@@ -180,8 +183,9 @@ List<FlashcardData> flashcardDataList = [];
                 Text(
                   'Set Flashcard Title',
                   style: GoogleFonts.robotoMono(
-                    fontSize: 12.0, 
-                  ),),
+                    fontSize: 12.0,
+                  ),
+                ),
                 TextField(
                   style: GoogleFonts.robotoMono(
                     fontSize: 14.0,
@@ -206,10 +210,9 @@ List<FlashcardData> flashcardDataList = [];
                       ),
                       ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromRGBO(242, 219, 213, 1),
-                          )
-                        ),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color.fromRGBO(242, 219, 213, 1),
+                        )),
                         onPressed: () {
                           deleteFlashcardTextField(index);
                         },
@@ -218,7 +221,8 @@ List<FlashcardData> flashcardDataList = [];
                           style: GoogleFonts.robotoMono(
                             fontWeight: FontWeight.w500,
                             color: Colors.black,
-                          ),),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -234,10 +238,10 @@ List<FlashcardData> flashcardDataList = [];
           hoverColor: Color.fromRGBO(250, 244, 227, 1),
           backgroundColor: Color.fromRGBO(244, 238, 237, 1),
           child: const Icon(
-             Icons.add,
+            Icons.add,
             size: 40.0,
             color: Color.fromRGBO(165, 166, 143, 1),
-            ),
+          ),
         ),
       ),
     );
@@ -253,9 +257,8 @@ List<FlashcardData> flashcardDataList = [];
           children: [
             Text(
               'Question',
-               style: GoogleFonts.robotoMono(
-                fontSize: 12.0 
-               ),),
+              style: GoogleFonts.robotoMono(fontSize: 12.0),
+            ),
             TextField(
               style: GoogleFonts.robotoMono(
                 fontSize: 14.0,
@@ -265,32 +268,30 @@ List<FlashcardData> flashcardDataList = [];
               decoration: InputDecoration(
                 hintText: 'Input Question',
                 hintStyle: GoogleFonts.robotoMono(
-                    fontSize: 14.0,
+                  fontSize: 14.0,
                 ),
-
               ),
               maxLines: null, // Allows multiple lines
             ),
             Text(
               'Answer',
-              style: GoogleFonts.robotoMono(
-                fontSize: 12.0 
-               ),
-               ),
+              style: GoogleFonts.robotoMono(fontSize: 12.0),
+            ),
             TextField(
               style: GoogleFonts.robotoMono(
                 fontSize: 14.0,
               ),
               controller: newAnswerController,
               decoration: InputDecoration(
-                hintText: 'Input Answer',
-                hintStyle: GoogleFonts.robotoMono(
-                  fontSize: 14.0,
-                )
-              ),
+                  hintText: 'Input Answer',
+                  hintStyle: GoogleFonts.robotoMono(
+                    fontSize: 14.0,
+                  )),
               maxLines: null, // Allows multiple lines
             ),
-            SizedBox(height: 30.0,),
+            SizedBox(
+              height: 30.0,
+            ),
           ],
         ),
       );
@@ -298,8 +299,7 @@ List<FlashcardData> flashcardDataList = [];
       questionControllers.add(newQuestionController);
       answerControllers.add(newAnswerController);
 
-    // Add a SizedBox for margin after each iteration
-   
+      // Add a SizedBox for margin after each iteration
     });
   }
 
@@ -310,6 +310,4 @@ List<FlashcardData> flashcardDataList = [];
       answerControllers.removeAt(index);
     });
   }
-
-  
 }
