@@ -68,7 +68,7 @@ class _LoginState extends State<Login> {
             ),
             Container(
               width: 300.0,
-              height: 350.0,
+              height: 400.0,
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: const Color.fromRGBO(250, 244, 227, 1),
@@ -211,7 +211,7 @@ class _LoginState extends State<Login> {
       final User? user = authResult.user;
 
       print("Signed in: ${user!.displayName}");
-
+      Navigator.pushReplacementNamed(context, Dashboard.routeName);
       return user;
     } catch (error) {
       print(error);

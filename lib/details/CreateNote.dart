@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobdev_final/firebase_options.dart';
 import 'package:mobdev_final/colors.dart';
 import 'package:mobdev_final/services/firestore.dart';
@@ -19,7 +20,8 @@ class CreateNote extends StatefulWidget {
   final String? noteText;
   final String? docID;
 
-  const CreateNote({Key? key, this.noteTitle, this.noteText, this.docID}) : super(key: key);
+  const CreateNote({Key? key, this.noteTitle, this.noteText, this.docID})
+      : super(key: key);
 
   @override
   State<CreateNote> createState() => _CreateNoteScreenState();
@@ -44,14 +46,23 @@ class _CreateNoteScreenState extends State<CreateNote> {
     return MaterialApp(
       theme: ThemeData(scaffoldBackgroundColor: background),
       home: Scaffold(
+        backgroundColor: Color.fromRGBO(250, 244, 227, 1),
         appBar: AppBar(
+          backgroundColor: Color.fromRGBO(217, 178, 169, 0.7),
           title: Text(
             'Create Note',
-            style: TextStyle(color: Colors.black),
+            style: GoogleFonts.robotoMono(
+              color: Colors.black,
+              fontSize: 18.0,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-          backgroundColor: primary,
           actions: [
             ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Color.fromRGBO(165, 166, 143, 1)),
+              ),
               onPressed: () {
                 if (widget.docID == null) {
                   firestoreService.addNote(
@@ -67,7 +78,11 @@ class _CreateNoteScreenState extends State<CreateNote> {
                 }
                 Navigator.pop(context);
               },
-              child: Text('Save'),
+              child: Text(
+                'Save',
+                style: GoogleFonts.robotoMono(
+                    color: Color.fromRGBO(244, 238, 237, 1), fontSize: 14.0),
+              ),
             ),
           ],
         ),
@@ -78,16 +93,20 @@ class _CreateNoteScreenState extends State<CreateNote> {
             children: [
               TextField(
                 controller: titleController,
+                style: GoogleFonts.robotoMono(),
                 decoration: InputDecoration(
-                  hintText: 'Title',
-                ),
+                    hintText: 'Title',
+                    hintStyle: GoogleFonts.robotoMono(),
+                    contentPadding: EdgeInsets.all(8.0)),
                 maxLines: null, // Allows multiple lines
               ),
               TextField(
                 controller: textController,
+                style: GoogleFonts.robotoMono(),
                 decoration: InputDecoration(
-                  hintText: 'ambot...'
-                ),
+                    hintText: 'Content',
+                    hintStyle: GoogleFonts.robotoMono(),
+                    contentPadding: EdgeInsets.all(8.0)),
                 maxLines: null, // Allows multiple lines
               ),
             ],
