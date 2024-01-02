@@ -58,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
             Stack(
               children: <Widget>[
                 Text(
-                  "QuizMaster",
+                  "FlashMaster",
                   style: GoogleFonts.robotoMono(
                     fontSize: 45.0,
                     fontWeight: FontWeight.w400,
@@ -69,7 +69,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ),
                 Text(
-                  "QuizMaster",
+                  "FlashMaster",
                   style: GoogleFonts.robotoMono(
                     fontSize: 45.0,
                     fontWeight: FontWeight.w400,

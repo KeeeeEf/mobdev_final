@@ -12,7 +12,6 @@ import 'package:mobdev_final/services/firestore.dart';
 import 'package:mobdev_final/services/StorageService.dart';
 import 'package:mobdev_final/details/Notes.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -37,7 +36,7 @@ class _DashboardScreenState extends State<Dashboard> {
         appBar: AppBar(
           // ignore: prefer_const_constructors
           title: Text(
-            'QuizMaster',
+            'FlashMaster',
             style: GoogleFonts.robotoMono(
               color: Color.fromRGBO(165, 166, 143, 1),
               textStyle: const TextStyle(

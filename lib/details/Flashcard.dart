@@ -48,7 +48,7 @@ class _FlashCardScreenState extends State<Flashcard> {
       backgroundColor: Color.fromRGBO(217, 178, 169, 1),
       appBar: AppBar(
         title: const Text(
-          'QuizMaster',
+          'FlashMaster',
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: primary,
