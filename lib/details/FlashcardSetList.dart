@@ -53,7 +53,14 @@ final FlashCardSetService flashCardSetService = FlashCardSetService();
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.pushNamed(context, CreateFlashcard.routeName);
+          Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CreateFlashcard(
+              type: 'add',
+            ),
+          ),
+        );
         },
         child: const Icon(Icons.add),
       ),
@@ -91,7 +98,18 @@ final FlashCardSetService flashCardSetService = FlashCardSetService();
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CreateFlashcard(
+                              setTitle: noteTitle,
+                              type: 'edit',
+                              docID: docID, 
+                            ),
+                          ),
+                        );
+                        },
                         icon: const Icon(Icons.settings),
                       ),
                       IconButton(
