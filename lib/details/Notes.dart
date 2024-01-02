@@ -136,7 +136,7 @@ class _NotesScreenState extends State<Notes> {
               },
             );
           } else {
-            return const Text('Bushet');
+            return const Text('');
           }
         }),
       ),

@@ -34,7 +34,7 @@ class _NotesListScreenState extends State<NotesList> {
       backgroundColor: Color.fromRGBO(217, 178, 169, 1),
       appBar: AppBar(
         title: Text(
-          'QuizMaster',
+          'Your notes',
           style: GoogleFonts.robotoMono(
             color: Color.fromRGBO(165, 166, 143, 1),
           ),
@@ -46,7 +46,7 @@ class _NotesListScreenState extends State<NotesList> {
             icon: Icon(Icons.logout),
             padding: EdgeInsets.all(5.0),
             color: Color.fromRGBO(165, 166, 143, 1),
-            onPressed: () {
+            onPressed: () {    
               signOut();
             },
           ),
