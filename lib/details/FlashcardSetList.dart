@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mobdev_final/details/CreateFlashCard.dart';
 import 'package:mobdev_final/details/CreateNote.dart';
+import 'package:mobdev_final/details/EditFlashCard.dart';
 import 'package:mobdev_final/details/Flashcard.dart';
 import 'package:mobdev_final/firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -130,7 +131,7 @@ final FlashCardSetService flashCardSetService = FlashCardSetService();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CreateFlashcard(
+                            builder: (context) => EditFlashCard(
                               setTitle: noteTitle,
                               type: 'edit',
                               docID: docID, 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobdev_final/details/CreateFlashCard.dart';
 import 'package:mobdev_final/details/CreateNote.dart';
+import 'package:mobdev_final/details/EditFlashCard.dart';
 import 'package:mobdev_final/details/Flashcard.dart';
 import 'package:mobdev_final/details/FlashcardSetList.dart';
 import 'package:mobdev_final/details/Notes.dart';
@@ -27,4 +28,5 @@ final Map<String, WidgetBuilder> routes = {
   FlashCardSetList.routeName: (BuildContext context) => FlashCardSetList(),
   Flashcard.routeName: (BuildContext context) => Flashcard(),
   CreateFlashcard.routeName: (BuildContext context) => CreateFlashcard(),
+  EditFlashCard.routeName: (BuildContext context) => EditFlashCard(),
 };

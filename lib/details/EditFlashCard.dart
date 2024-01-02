@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mobdev_final/firebase_options.dart';
 import 'package:mobdev_final/colors.dart';
 import 'package:mobdev_final/services/firestore.dart';
@@ -13,20 +12,19 @@ import 'package:mobdev_final/services/flashcardSet.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const CreateFlashcard());
+  runApp(const EditFlashCard());
 }
 
-class CreateFlashcard extends StatefulWidget {
-  static const String routeName = "createFlashcard";
+class EditFlashCard extends StatefulWidget {
+  static const String routeName = "editFlashcard";
   final String? setTitle;
   final String? type;
   final String? docID;
 
-  const CreateFlashcard({Key? key, this.setTitle, this.type, this.docID})
-      : super(key: key);
+  const EditFlashCard({Key? key, this.setTitle, this.type, this.docID}) : super(key: key);
 
   @override
-  State<CreateFlashcard> createState() => _CreateFlashcardScreenState();
+  State<EditFlashCard> createState() => _EditFlashCardScreenState();
 }
 
 class FlashcardData {
@@ -41,8 +39,9 @@ class FlashcardData {
   });
 }
 
-class _CreateFlashcardScreenState extends State<CreateFlashcard> {
-  StorageService storageService = StorageService();
+class _EditFlashCardScreenState extends State<EditFlashCard> {
+
+ StorageService storageService = StorageService();
   final FlashCardSetService flashCardSetService = FlashCardSetService();
   final FlashCardService flashCardService = FlashCardService();
 
@@ -52,9 +51,71 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
 
   List<TextEditingController> questionControllers = [];
   List<TextEditingController> answerControllers = [];
-  List<Widget> flashcardTextFields = [];
+  List<Widget> flashcardTextFields = []; 
 
-  List<FlashcardData> flashcardDataList = [];
+  @override
+  void initState() {
+    print(widget.type);
+    super.initState();
+    titleController.text = widget.setTitle ?? '';
+
+    if (widget.type == 'edit' && widget.docID != null) {
+      fetchFlashcards(widget.docID!);
+    }
+  }
+
+List<FlashcardData> flashcardDataList = [];
+
+  void fetchFlashcards(String setUid) {
+    flashCardService.getCardsStream(setUid).listen((QuerySnapshot querySnapshot) {
+      flashcardDataList.clear();
+
+      for (QueryDocumentSnapshot document in querySnapshot.docs) {
+        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+        String question = data['question'] ?? '';
+        String answer = data['answer'] ?? '';
+
+        TextEditingController questionController = TextEditingController(text: question);
+        TextEditingController answerController = TextEditingController(text: answer);
+
+        questionControllers.add(questionController);
+        answerControllers.add(answerController);
+
+        FlashcardData flashcardData = FlashcardData(
+          docID: document.id,
+          question: question,
+          answer: answer,
+        );
+
+        flashcardDataList.add(flashcardData);
+
+        flashcardTextFields.add(
+          Column(
+            children: [
+              Text('Question'),
+              TextField(
+                controller: questionController,
+                decoration: InputDecoration(
+                  hintText: 'Input Question',
+                ),
+                maxLines: null,
+              ),
+              Text('Answer'),
+              TextField(
+                controller: answerController,
+                decoration: InputDecoration(
+                  hintText: 'Input Answer',
+                ),
+                maxLines: null,
+              ),
+            ],
+          ),
+        );
+      }
+
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,20 +124,16 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Create Flashcard',
-            style: GoogleFonts.robotoMono(),
+            'Create Note',
+            style: TextStyle(color: Colors.black),
           ),
           backgroundColor: primary,
           actions: [
-            ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                const Color.fromRGBO(165, 166, 143, 1),
-              )),
-              onPressed: () async {
-                if (widget.type == 'add') {
-                  String? setUid =
-                      await flashCardSetService.addSet(titleController.text);
+          ElevatedButton(
+            onPressed: () async {
+
+                if(widget.type == 'add'){
+                  String? setUid = await flashCardSetService.addSet(titleController.text);
                   if (setUid != null) {
                     for (int i = 0; i < questionControllers.length; i++) {
                       flashCardService.addCard(
@@ -84,28 +141,22 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
                         answerControllers[i].text,
                         setUid,
                       );
-                    }
-                  }
-                } else {
+                    }}
+                }else{
                   print(widget.docID);
                   for (int i = 0; i < questionControllers.length; i++) {
-                    print('testing: ${answerControllers[i].text}');
+                  print('testing: ${answerControllers[i].text}');
                     flashCardService.updateCard(
                       flashcardDataList[i].docID,
                       questionControllers[i].text,
-                      answerControllers[i].text,
+                      answerControllers[i].text
                     );
                   }
                 }
-                Navigator.pop(context);
-              },
-              child: Text(
-                'Save',
-                style: GoogleFonts.robotoMono(
-                  color: Color.fromRGBO(244, 238, 237, 1),
-                ),
-              ),
-            ),
+              Navigator.pop(context);
+            },
+            child: Text('Save'),
+          ),
           ],
         ),
         body: SingleChildScrollView(
@@ -114,25 +165,15 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Set Flashcard Title',
-                  style: GoogleFonts.robotoMono(
-                    fontSize: 12.0,
-                  ),
-                ),
+                Text('Set Title'),
                 TextField(
-                  style: GoogleFonts.robotoMono(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w600,
-                  ),
                   controller: titleController,
                   decoration: InputDecoration(
                     hintText: 'Title',
-                    hintStyle: GoogleFonts.robotoMono(),
                   ),
                   maxLines: null, // Allows multiple lines
                 ),
-
+                Text('Flashcards'),
                 // Dynamically added TextFields
                 ListView.builder(
                   shrinkWrap: true,
@@ -143,38 +184,16 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
                         child: flashcardTextFields[index],
                       ),
                       ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromRGBO(242, 219, 213, 1),
-                        )),
                         onPressed: () {
                           deleteFlashcardTextField(index);
                         },
-                        child: Text(
-                          'Delete',
-                          style: GoogleFonts.robotoMono(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                        ),
+                        child: Text('Delete'),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            addFlashcardTextField();
-          },
-          hoverColor: Color.fromRGBO(250, 244, 227, 1),
-          backgroundColor: Color.fromRGBO(244, 238, 237, 1),
-          child: const Icon(
-            Icons.add,
-            size: 40.0,
-            color: Color.fromRGBO(165, 166, 143, 1),
           ),
         ),
       ),
@@ -189,42 +208,21 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
       flashcardTextFields.add(
         Column(
           children: [
-            Text(
-              'Question',
-              style: GoogleFonts.robotoMono(fontSize: 12.0),
-            ),
+            Text('Question'),
             TextField(
-              style: GoogleFonts.robotoMono(
-                fontSize: 14.0,
-                fontWeight: FontWeight.w400,
-              ),
               controller: newQuestionController,
               decoration: InputDecoration(
                 hintText: 'Input Question',
-                hintStyle: GoogleFonts.robotoMono(
-                  fontSize: 14.0,
-                ),
               ),
               maxLines: null, // Allows multiple lines
             ),
-            Text(
-              'Answer',
-              style: GoogleFonts.robotoMono(fontSize: 12.0),
-            ),
+            Text('Answer'),
             TextField(
-              style: GoogleFonts.robotoMono(
-                fontSize: 14.0,
-              ),
               controller: newAnswerController,
               decoration: InputDecoration(
-                  hintText: 'Input Answer',
-                  hintStyle: GoogleFonts.robotoMono(
-                    fontSize: 14.0,
-                  )),
+                hintText: 'Input Answer',
+              ),
               maxLines: null, // Allows multiple lines
-            ),
-            SizedBox(
-              height: 30.0,
             ),
           ],
         ),
@@ -232,8 +230,6 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
 
       questionControllers.add(newQuestionController);
       answerControllers.add(newAnswerController);
-
-      // Add a SizedBox for margin after each iteration
     });
   }
 
@@ -244,4 +240,6 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
       answerControllers.removeAt(index);
     });
   }
+
+  
 }
