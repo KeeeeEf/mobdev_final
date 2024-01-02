@@ -131,7 +131,7 @@ class _FlashCardScreenState extends State<Flashcard> {
                   ),
                 );
               } else {
-                return const Text('Bushet');
+                return const Text('');
               }
             }),
           ),

@@ -9,7 +9,6 @@ import 'package:mobdev_final/main.dart';
 import 'package:mobdev_final/services/firestore.dart';
 import 'package:mobdev_final/services/StorageService.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -43,13 +42,13 @@ class _NotesScreenState extends State<Notes> {
                 ElevatedButton(
                     onPressed: () {
                       if (docID == null) {
-                        firestoreService.addNote('bilat', textController.text);
+                        firestoreService.addNote('', textController.text);
                       }
 
                       //update
                       else {
                         firestoreService.updateNote(
-                            docID, 'bilat', textController.text);
+                            docID, '', textController.text);
                       }
 
                       //clear the text controller
@@ -119,9 +118,9 @@ class _NotesScreenState extends State<Notes> {
                           onPressed: () => openNoteBox(docID: docID),
                           icon: const Icon(
                             Icons.settings,
-                            color: Color.fromRGBO(250, 244, 227, 1) ,
+                            color: Color.fromRGBO(250, 244, 227, 1),
                             size: 10.0,
-                            ),
+                          ),
                         ),
                         IconButton(
                           onPressed: () => firestoreService.deleteNote(docID),
@@ -129,7 +128,7 @@ class _NotesScreenState extends State<Notes> {
                             Icons.delete,
                             color: Color.fromRGBO(250, 244, 227, 1),
                             size: 10.0,
-                            ),
+                          ),
                         ),
                       ],
                     ));
