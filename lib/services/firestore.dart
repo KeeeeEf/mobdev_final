@@ -48,7 +48,7 @@ Stream<QuerySnapshot> getNotesStream() {
     return getNotesStream;
   } else {
     // Return an empty stream if the user is not logged in
-    print('bilalat');
+    print('Not logged on!');
     return Stream<QuerySnapshot>.empty();
   }
 }
