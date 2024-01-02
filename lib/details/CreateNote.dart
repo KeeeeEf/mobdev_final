@@ -81,7 +81,9 @@ class _CreateNoteScreenState extends State<CreateNote> {
               child: Text(
                 'Save',
                 style: GoogleFonts.robotoMono(
-                    color: Color.fromRGBO(244, 238, 237, 1), fontSize: 14.0),
+                    color: Color.fromRGBO(244, 238, 237, 1),
+                    fontSize: 14.0,
+                    height: 5.0),
               ),
             ),
           ],
@@ -93,21 +95,34 @@ class _CreateNoteScreenState extends State<CreateNote> {
             children: [
               TextField(
                 controller: titleController,
-                style: GoogleFonts.robotoMono(),
+                style: GoogleFonts.robotoMono(
+                  fontSize: 40,
+                  fontWeight: FontWeight.w700,
+                ),
                 decoration: InputDecoration(
                     hintText: 'Title',
                     hintStyle: GoogleFonts.robotoMono(),
                     contentPadding: EdgeInsets.all(8.0)),
                 maxLines: null, // Allows multiple lines
               ),
+              const SizedBox(
+                height: 20.0,
+              ),
               TextField(
+                textAlign: TextAlign.start,
                 controller: textController,
                 style: GoogleFonts.robotoMono(),
                 decoration: InputDecoration(
-                    hintText: 'Content',
-                    hintStyle: GoogleFonts.robotoMono(),
-                    contentPadding: EdgeInsets.all(8.0)),
+                  border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(width: 3, color: Colors.greenAccent)),
+                  fillColor: Color.fromRGBO(242, 219, 213, 1),
+                  filled: true,
+                  hintText: 'Content',
+                  hintStyle: GoogleFonts.robotoMono(),
+                ),
                 maxLines: null, // Allows multiple lines
+                textAlignVertical: TextAlignVertical.top,
               ),
             ],
           ),
