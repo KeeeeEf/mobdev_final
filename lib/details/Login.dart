@@ -68,7 +68,7 @@ class _LoginState extends State<Login> {
             ),
             Container(
               width: 300.0,
-              height: 350.0,
+              height: 400.0,
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: const Color.fromRGBO(250, 244, 227, 1),
@@ -112,7 +112,7 @@ class _LoginState extends State<Login> {
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Color.fromRGBO(242, 219, 213, 1)),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       ),
                     ),
                     child: Text(
@@ -133,7 +133,7 @@ class _LoginState extends State<Login> {
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Color.fromRGBO(242, 219, 213, 1)),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       ),
                     ),
                     child: Text(

@@ -102,7 +102,7 @@ class _NotesListScreenState extends State<NotesList> {
                           style: GoogleFonts.robotoMono(
                               fontSize: 14.0,
                               color: Colors.black,
-                              fontWeight: FontWeight.w400),
+                              fontWeight: FontWeight.w700),
                         ),
                         onTap: () {
                           Navigator.push(

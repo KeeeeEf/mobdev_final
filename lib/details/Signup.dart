@@ -100,7 +100,7 @@ class _SignupState extends State<Signup> {
                       ),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                         const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 20),
+                            horizontal: 10, vertical: 10),
                       ),
                     ),
                     child: Text(
