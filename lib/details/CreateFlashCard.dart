@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobdev_final/firebase_options.dart';
 import 'package:mobdev_final/colors.dart';
 import 'package:mobdev_final/services/firestore.dart';
@@ -22,7 +23,13 @@ class CreateFlashcard extends StatefulWidget {
   final String? noteAnswer;
   final String? docID;
 
-  const CreateFlashcard({Key? key, this.noteTitle, this.noteQuestion, this.noteAnswer,  this.docID}) : super(key: key);
+  const CreateFlashcard(
+      {Key? key,
+      this.noteTitle,
+      this.noteQuestion,
+      this.noteAnswer,
+      this.docID})
+      : super(key: key);
 
   @override
   State<CreateFlashcard> createState() => _CreateFlashcardScreenState();
@@ -39,7 +46,8 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
 
   List<TextEditingController> questionControllers = [];
   List<TextEditingController> answerControllers = [];
-  List<Widget> flashcardTextFields = []; // List to store dynamically added TextFields
+  List<Widget> flashcardTextFields =
+      []; // List to store dynamically added TextFields
 
   @override
   void initState() {
@@ -56,29 +64,45 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Create Note',
-            style: TextStyle(color: Colors.black),
+            'Create Flashcard',
+            style: GoogleFonts.robotoMono(
+              color: Colors.black,
+              fontSize: 18.0,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           backgroundColor: primary,
           actions: [
-          ElevatedButton(
-            onPressed: () async {
-              String? setUid = await flashCardSetService.addSet(titleController.text);
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  const Color.fromRGBO(250, 244, 227, 1),
+                ),
+              ),
+              onPressed: () async {
+                String? setUid =
+                    await flashCardSetService.addSet(titleController.text);
 
-              if (setUid != null) {
-                for (int i = 0; i < questionControllers.length; i++) {
-                  flashCardService.addCard(
-                    questionControllers[i].text,
-                    answerControllers[i].text,
-                    setUid,
-                  );
+                if (setUid != null) {
+                  for (int i = 0; i < questionControllers.length; i++) {
+                    flashCardService.addCard(
+                      questionControllers[i].text,
+                      answerControllers[i].text,
+                      setUid,
+                    );
+                  }
                 }
-              }
 
-              Navigator.pop(context);
-            },
-            child: Text('Save'),
-          ),
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Save',
+                style: GoogleFonts.robotoMono(
+                  color: Color.fromRGBO(244, 238, 237, 1),
+                  fontSize: 14.0,
+                ),
+              ),
+            ),
           ],
         ),
         body: SingleChildScrollView(
@@ -87,15 +111,26 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Set Title'),
+                Text(
+                  'Input a title for this set',
+                  style: GoogleFonts.robotoMono(
+                    fontSize: 14.0,
+                  ),
+                ),
                 TextField(
+                  style: GoogleFonts.robotoMono(
+                    fontWeight: FontWeight.w600,
+                  ),
                   controller: titleController,
                   decoration: InputDecoration(
                     hintText: 'Title',
+                    hintStyle: GoogleFonts.robotoMono(),
                   ),
                   maxLines: null, // Allows multiple lines
                 ),
-                Text('Flashcards'),
+
+                SizedBox(height: 20.0),
+
                 // Dynamically added TextFields
                 ListView.builder(
                   shrinkWrap: true,
@@ -109,7 +144,16 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
                         onPressed: () {
                           deleteFlashcardTextField(index);
                         },
-                        child: Text('Delete'),
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                const Color.fromRGBO(165, 166, 143, 1))),
+                        child: Text(
+                          'Delete',
+                          style: GoogleFonts.robotoMono(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.0,
+                              color: Color.fromRGBO(244, 238, 237, 1)),
+                        ),
                       ),
                     ],
                   ),
@@ -122,7 +166,13 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
           onPressed: () {
             addFlashcardTextField();
           },
-          child: Icon(Icons.add),
+          hoverColor: Color.fromRGBO(250, 244, 227, 1),
+          backgroundColor: Color.fromRGBO(244, 238, 237, 1),
+          child: Icon(
+            Icons.add,
+            size: 40.0,
+            color: Color.fromRGBO(165, 166, 143, 1),
+          ),
         ),
       ),
     );
@@ -136,19 +186,40 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
       flashcardTextFields.add(
         Column(
           children: [
-            Text('Question'),
+            Text(
+              'Question',
+              style: GoogleFonts.robotoMono(),
+            ),
             TextField(
               controller: newQuestionController,
+              style: GoogleFonts.robotoMono(
+                fontSize: 14.0,
+              ),
               decoration: InputDecoration(
                 hintText: 'Input Question',
+                hintStyle: GoogleFonts.robotoMono(
+                  fontSize: 12.0,
+                ),
               ),
               maxLines: null, // Allows multiple lines
             ),
-            Text('Answer'),
+            SizedBox(
+              height: 15.0,
+            ),
+            Text(
+              'Answer',
+              style: GoogleFonts.robotoMono(
+                fontSize: 14.0,
+              ),
+            ),
             TextField(
+              style: GoogleFonts.robotoMono(),
               controller: newAnswerController,
               decoration: InputDecoration(
                 hintText: 'Input Answer',
+                hintStyle: GoogleFonts.robotoMono(
+                  fontSize: 12.0,
+                ),
               ),
               maxLines: null, // Allows multiple lines
             ),
@@ -158,6 +229,10 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
 
       questionControllers.add(newQuestionController);
       answerControllers.add(newAnswerController);
+
+      flashcardTextFields.add(SizedBox(
+        height: 20.0,
+      ));
     });
   }
 
@@ -168,6 +243,4 @@ class _CreateFlashcardScreenState extends State<CreateFlashcard> {
       answerControllers.removeAt(index);
     });
   }
-
-  
 }

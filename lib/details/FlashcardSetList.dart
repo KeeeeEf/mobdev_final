@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobdev_final/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,10 +34,13 @@ final FlashCardSetService flashCardSetService = FlashCardSetService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(217, 178, 169, 1),
       appBar: AppBar(
-        title: const Text(
-          'QuizMaster',
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          'Your Flashcards',
+          style: GoogleFonts.robotoMono(
+            color: Color.fromRGBO(165, 166, 143, 1),
+          ),
         ),
         backgroundColor: primary,
         shadowColor: Color(0),
@@ -44,7 +48,7 @@ final FlashCardSetService flashCardSetService = FlashCardSetService();
           IconButton(
             icon: Icon(Icons.logout),
             padding: EdgeInsets.all(5.0),
-            color: Colors.amber,
+            color: Color.fromRGBO(165, 166, 143, 1),
             onPressed: () {
               signOut();
             },
@@ -55,9 +59,18 @@ final FlashCardSetService flashCardSetService = FlashCardSetService();
         onPressed: (){
           Navigator.pushNamed(context, CreateFlashcard.routeName);
         },
-        child: const Icon(Icons.add),
+        hoverColor: Color.fromRGBO(250, 244, 227, 1),
+        backgroundColor: Color.fromRGBO(244, 238, 237, 1),
+        child: const Icon(
+          Icons.add,
+          size: 40.0,
+          color: Color.fromRGBO(165, 166, 143, 1),
       ),
-      body: StreamBuilder<QuerySnapshot>(
+      ),
+      
+    body: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: StreamBuilder<QuerySnapshot>(
         stream: flashCardSetService.getSetStream(),
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
@@ -77,8 +90,23 @@ final FlashCardSetService flashCardSetService = FlashCardSetService();
 
 
                 //display as a list tile
-                return ListTile(
-                  title: Text(noteTitle),
+              return Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(250, 244, 227, 0.30),
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  child:  ListTile(
+                  title: Text(
+                    noteTitle,
+                    style: GoogleFonts.robotoMono(
+                     fontSize: 14.0,
+                     color: Colors.black,
+                     fontWeight: FontWeight.w700
+                    ),
+                    ),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -91,22 +119,25 @@ final FlashCardSetService flashCardSetService = FlashCardSetService();
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.settings),
-                      ),
-                      IconButton(
                         onPressed: () => flashCardSetService.deleteSet(docID),
-                        icon: const Icon(Icons.delete),
+                        icon: const Icon(
+                          Icons.delete,
+                           color: Color.fromRGBO(250, 244, 227, 1),
+                          size: 20.0,
+                          ),
                       ),
                     ],
                   ),
-                );
+                ),
+                  ),
+              );
               },
             );
           } else {
-            return const Text('Bushet');
+            return const Text('');
           }
         }),
+      ),
       ),
     );
   }
