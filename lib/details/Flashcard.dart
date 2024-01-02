@@ -10,7 +10,7 @@ import 'package:mobdev_final/main.dart';
 import 'package:mobdev_final/services/flashcard.dart';
 import 'package:mobdev_final/services/flashcardSet.dart';
 import 'package:mobdev_final/services/StorageService.dart';
-
+import 'package:flip_card/flip_card.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,10 +31,19 @@ class Flashcard extends StatefulWidget {
 
 class _FlashCardScreenState extends State<Flashcard> {
   StorageService storageService = StorageService();
-final FlashCardService flashCardService = FlashCardService();
+  final FlashCardService flashCardService = FlashCardService();
+
+  late List<FlashcardModel> _flashcards;
+  int _currIndex = 0;
 
   @override
-  Widget build(BuildContext context) {  
+  void initState() {
+    super.initState();
+    _flashcards = []; // Initialize with your actual flashcards data
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -54,43 +63,93 @@ final FlashCardService flashCardService = FlashCardService();
           ),
         ],
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: flashCardService.getCardsStream(widget.setuid ?? ''), 
-        builder: ((context, snapshot) {
-          if (snapshot.hasData) {
-            List notesList = snapshot.data!.docs;
-            return ListView.builder(
-              itemCount: notesList.length,
-              itemBuilder: (context, index) {
-                //get each indiv doc
-                DocumentSnapshot document = notesList[index];
-                String docID = document.id;
+      body: Center(
+        child: Container(
+          padding: EdgeInsets.all(16.0),
+          child: StreamBuilder<QuerySnapshot>(
+            stream: flashCardService.getCardsStream(widget.setuid ?? ''),
+            builder: ((context, snapshot) {
+              if (snapshot.hasData) {
+                List notesList = snapshot.data!.docs;
+                return ListView.builder(
+                  itemCount: notesList.length,
+                  itemBuilder: (context, index) {
+                    //get each indiv doc
+                    DocumentSnapshot document = notesList[index];
+                    String docID = document.id;
 
-                //get note from the doc
-                Map<String, dynamic> data =
-                    document.data() as Map<String, dynamic>;
-                String noteQuestion = data['question'] ?? '';
-                String noteAnswer = data['answer'] ?? '';  
+                    //get note from the doc
+                    Map<String, dynamic> data =
+                        document.data() as Map<String, dynamic>;
+                    String noteQuestion = data['question'] ?? '';
+                    String noteAnswer = data['answer'] ?? '';
 
-
-                //display as a list tile
-                return ListTile(
-                  trailing: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('Question: ${noteQuestion}'),
-                      Text('Answer: ${noteAnswer}')
-                    ],
-                  ),
+                    //display as a list tile
+                    return Card(
+                      elevation: 4,
+                      child: ListTile(
+                        title: Column(
+                          children: [
+                            SizedBox(
+                              width: 250,
+                              height: 250,
+                              child: FlipCard(
+                                front: Center(
+                                  child: Text(
+                                    'Question: $noteQuestion',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                back: Center(
+                                  child: Text(
+                                    'Answer: $noteAnswer',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                OutlinedButton.icon(
+                                  onPressed: previousCard,
+                                  icon: Icon(Icons.chevron_left),
+                                  label: Text('Prev'),
+                                ),
+                                OutlinedButton.icon(
+                                  onPressed: nextCard,
+                                  icon: Icon(Icons.chevron_right),
+                                  label: Text('Next'),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 );
-              },
-            );
-          } else {
-            return const Text('Bushet');
-          }
-        }),
+              } else {
+                return const Text('Bushet');
+              }
+            }),
+          ),
+        ),
       ),
     );
+  }
+
+  void nextCard() {
+    setState(() {
+      _currIndex = (_currIndex + 1 < _flashcards.length) ? _currIndex + 1 : 0;
+    });
+  }
+
+  void previousCard() {
+    setState(() {
+      _currIndex =
+          (_currIndex - 1 >= 0) ? _currIndex - 1 : _flashcards.length - 1;
+    });
   }
 
   signOut() async {
@@ -102,4 +161,11 @@ final FlashCardService flashCardService = FlashCardService();
       print(e);
     }
   }
+}
+
+class FlashcardModel {
+  final String question;
+  final String answer;
+
+  FlashcardModel(this.question, this.answer);
 }
