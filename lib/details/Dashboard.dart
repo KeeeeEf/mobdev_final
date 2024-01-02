@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mobdev_final/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mobdev_final/details/FlashcardSetList.dart';
 import 'package:mobdev_final/details/NotesList.dart';
 import 'package:mobdev_final/firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +85,9 @@ class _DashboardScreenState extends State<Dashboard> {
                 margin: EdgeInsets.all(10.0),
                 width: 300,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, FlashCardSetList.routeName);
+                  },
                   style: ElevatedButton.styleFrom(
                     primary: secondary,
                     onPrimary: Colors.black,
