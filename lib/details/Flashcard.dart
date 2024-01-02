@@ -10,7 +10,7 @@ import 'package:mobdev_final/main.dart';
 import 'package:mobdev_final/services/flashcard.dart';
 import 'package:mobdev_final/services/flashcardSet.dart';
 import 'package:mobdev_final/services/StorageService.dart';
-
+import 'package:flip_card/flip_card.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,10 +31,10 @@ class Flashcard extends StatefulWidget {
 
 class _FlashCardScreenState extends State<Flashcard> {
   StorageService storageService = StorageService();
-final FlashCardService flashCardService = FlashCardService();
+  final FlashCardService flashCardService = FlashCardService();
 
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -55,7 +55,7 @@ final FlashCardService flashCardService = FlashCardService();
         ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: flashCardService.getCardsStream(widget.setuid ?? ''), 
+        stream: flashCardService.getCardsStream(widget.setuid ?? ''),
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
             List notesList = snapshot.data!.docs;
@@ -70,17 +70,35 @@ final FlashCardService flashCardService = FlashCardService();
                 Map<String, dynamic> data =
                     document.data() as Map<String, dynamic>;
                 String noteQuestion = data['question'] ?? '';
-                String noteAnswer = data['answer'] ?? '';  
-
+                String noteAnswer = data['answer'] ?? '';
 
                 //display as a list tile
-                return ListTile(
-                  trailing: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('Question: ${noteQuestion}'),
-                      Text('Answer: ${noteAnswer}')
-                    ],
+                return SingleChildScrollView(
+                  child: ListTile(
+                    trailing: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Question: ${noteQuestion}'),
+                        Text('Answer: ${noteAnswer}'),
+                        SizedBox(
+                            width: 250,
+                            height: 250,
+                            child: FlipCard(
+                              front: Card(
+                                  elevation: 4,
+                                  child: Center(
+                                      child: Text(
+                                          '_flashcards[_currIndex].answer',
+                                          textAlign: TextAlign.center))),
+                              back: Card(
+                                  elevation: 4,
+                                  child: Center(
+                                      child: Text(
+                                          '_flashcards[_currIndex].answer',
+                                          textAlign: TextAlign.center))),
+                            )),
+                      ],
+                    ),
                   ),
                 );
               },
