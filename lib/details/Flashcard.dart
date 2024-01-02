@@ -38,7 +38,7 @@ final FlashCardService flashCardService = FlashCardService();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'QuizMaster',
+          'Your Flashcard 123',
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: primary,

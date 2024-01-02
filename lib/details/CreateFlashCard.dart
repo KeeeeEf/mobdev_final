@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobdev_final/firebase_options.dart';
 import 'package:mobdev_final/colors.dart';
 import 'package:mobdev_final/services/firestore.dart';
@@ -123,12 +124,19 @@ List<FlashcardData> flashcardDataList = [];
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Create Note',
-            style: TextStyle(color: Colors.black),
+            'Create Flashcard',
+            style: GoogleFonts.robotoMono(),
           ),
           backgroundColor: primary,
           actions: [
           ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                const Color.fromRGBO(165, 166, 143, 1),
+              ) 
+            
+            ),
+
             onPressed: () async {
 
                 if(widget.type == 'add'){
@@ -154,7 +162,12 @@ List<FlashcardData> flashcardDataList = [];
                 }
               Navigator.pop(context);
             },
-            child: Text('Save'),
+            child: Text(
+              'Save',
+              style: GoogleFonts.robotoMono(
+                color: Color.fromRGBO(244, 238, 237,1),
+              ),
+            ),
           ),
           ],
         ),
@@ -164,15 +177,24 @@ List<FlashcardData> flashcardDataList = [];
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Set Title'),
+                Text(
+                  'Set Flashcard Title',
+                  style: GoogleFonts.robotoMono(
+                    fontSize: 12.0, 
+                  ),),
                 TextField(
+                  style: GoogleFonts.robotoMono(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w600,
+                  ),
                   controller: titleController,
                   decoration: InputDecoration(
                     hintText: 'Title',
+                    hintStyle: GoogleFonts.robotoMono(),
                   ),
                   maxLines: null, // Allows multiple lines
                 ),
-                Text('Flashcards'),
+
                 // Dynamically added TextFields
                 ListView.builder(
                   shrinkWrap: true,
@@ -183,10 +205,20 @@ List<FlashcardData> flashcardDataList = [];
                         child: flashcardTextFields[index],
                       ),
                       ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color.fromRGBO(242, 219, 213, 1),
+                          )
+                        ),
                         onPressed: () {
                           deleteFlashcardTextField(index);
                         },
-                        child: Text('Delete'),
+                        child: Text(
+                          'Delete',
+                          style: GoogleFonts.robotoMono(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),),
                       ),
                     ],
                   ),
@@ -199,7 +231,13 @@ List<FlashcardData> flashcardDataList = [];
           onPressed: () {
             addFlashcardTextField();
           },
-          child: Icon(Icons.add),
+          hoverColor: Color.fromRGBO(250, 244, 227, 1),
+          backgroundColor: Color.fromRGBO(244, 238, 237, 1),
+          child: const Icon(
+             Icons.add,
+            size: 40.0,
+            color: Color.fromRGBO(165, 166, 143, 1),
+            ),
         ),
       ),
     );
@@ -213,28 +251,55 @@ List<FlashcardData> flashcardDataList = [];
       flashcardTextFields.add(
         Column(
           children: [
-            Text('Question'),
+            Text(
+              'Question',
+               style: GoogleFonts.robotoMono(
+                fontSize: 12.0 
+               ),),
             TextField(
+              style: GoogleFonts.robotoMono(
+                fontSize: 14.0,
+                fontWeight: FontWeight.w400,
+              ),
               controller: newQuestionController,
               decoration: InputDecoration(
                 hintText: 'Input Question',
+                hintStyle: GoogleFonts.robotoMono(
+                    fontSize: 14.0,
+                ),
+
               ),
               maxLines: null, // Allows multiple lines
             ),
-            Text('Answer'),
+            Text(
+              'Answer',
+              style: GoogleFonts.robotoMono(
+                fontSize: 12.0 
+               ),
+               ),
             TextField(
+              style: GoogleFonts.robotoMono(
+                fontSize: 14.0,
+              ),
               controller: newAnswerController,
               decoration: InputDecoration(
                 hintText: 'Input Answer',
+                hintStyle: GoogleFonts.robotoMono(
+                  fontSize: 14.0,
+                )
               ),
               maxLines: null, // Allows multiple lines
             ),
+            SizedBox(height: 30.0,),
           ],
         ),
       );
 
       questionControllers.add(newQuestionController);
       answerControllers.add(newAnswerController);
+
+    // Add a SizedBox for margin after each iteration
+   
     });
   }
 
