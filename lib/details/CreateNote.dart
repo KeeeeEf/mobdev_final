@@ -83,7 +83,7 @@ class _CreateNoteScreenState extends State<CreateNote> {
                 style: GoogleFonts.robotoMono(
                     color: Color.fromRGBO(244, 238, 237, 1),
                     fontSize: 14.0,
-                    height: 5.0),
+                    height: 2.0),
               ),
             ),
           ],
@@ -122,7 +122,6 @@ class _CreateNoteScreenState extends State<CreateNote> {
                   hintStyle: GoogleFonts.robotoMono(),
                 ),
                 maxLines: null, // Allows multiple lines
-                textAlignVertical: TextAlignVertical.top,
               ),
             ],
           ),
